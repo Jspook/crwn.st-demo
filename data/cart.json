@@ -1,0 +1,11 @@
+[
+  {
+    "userId": "u1",
+    "items": [
+      {
+        "sku": "p1-s-red",
+        "quantity": 1
+      }
+    ]
+  }
+]

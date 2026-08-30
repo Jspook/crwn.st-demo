@@ -1,0 +1,25 @@
+[
+  {
+    "id": "p1",
+    "barcode": "8901234567890",
+    "name": "Ethereal Silk Dress",
+    "category": "Dresses",
+    "price": 129.99,
+    "tags": ["summer", "elegant", "silk"],
+    "variants": [
+      {
+        "sku": "p1-s-red",
+        "size": "S",
+        "color": "Red",
+        "stock": 5
+      },
+      {
+        "sku": "p1-m-red",
+        "size": "M",
+        "color": "Red",
+        "stock": 2
+      }
+    ],
+    "image": "/images/ethereal-silk-dress.jpg"
+  }
+]
