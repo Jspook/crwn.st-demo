@@ -15,7 +15,7 @@
         "sku": "p1-s-red",
         "size": "S",
         "color": "Red",
-        "stock": 3
+        "stock": 1
       },
       {
         "sku": "p1-m-red",
@@ -48,7 +48,7 @@
         "sku": "p2-s-cream",
         "size": "S",
         "color": "Cream",
-        "stock": 2
+        "stock": 0
       },
       {
         "sku": "p2-m-cream",
@@ -87,7 +87,7 @@
         "sku": "p3-s-sand",
         "size": "S",
         "color": "Sand",
-        "stock": 3
+        "stock": 2
       },
       {
         "sku": "p3-m-sand",

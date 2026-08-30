@@ -25,7 +25,7 @@ export default function CashierPOS() {
   
   const handleLogout = async () => {
     await fetch("/api/auth/logout", { method: "POST" });
-    router.push("/login");
+    router.push("/");
   };
 
   const handleScan = async (barcode: string) => {

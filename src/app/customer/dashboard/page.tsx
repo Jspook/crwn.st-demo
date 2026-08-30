@@ -45,7 +45,7 @@ export default function CustomerDashboard() {
   
   const handleLogout = async () => {
     await fetch("/api/auth/logout", { method: "POST" });
-    router.push("/login");
+    router.push("/");
   };
 
   const handleRoomScan = async (roomId: string) => {

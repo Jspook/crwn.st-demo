@@ -1,155 +1,196 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { LogIn, User, Lock, Phone, Loader2 } from "lucide-react";
 import GlassCard from "@/components/ui/GlassCard";
-import { ShoppingBag, ScanLine, LayoutDashboard } from "lucide-react";
 
-const portals = [
-  {
-    title: "Customer",
-    subtitle: "Scan · Try · Pay",
-    description:
-      "Browse the catalog, scan barcodes, request fitting room items, and checkout — all from your device.",
-    href: "/customer",
-    icon: ShoppingBag,
-  },
-  {
-    title: "Cashier POS",
-    subtitle: "Process · Invoice · Close",
-    description:
-      "Full point-of-sale interface with barcode scanning, payment processing, and e-receipt generation.",
-    href: "/pos",
-    icon: ScanLine,
-  },
-  {
-    title: "Fitting Room",
-    subtitle: "Manage · Fulfill · Track",
-    description:
-      "Real-time Kanban board for fitting room orders. Track requests, fulfill items, and manage room occupancy.",
-    href: "/staff",
-    icon: LayoutDashboard,
-  },
-];
+export default function Login() {
+  const router = useRouter();
+  const [activeTab, setActiveTab] = useState<"customer" | "staff">("customer");
+  
+  const [identifier, setIdentifier] = useState("");
+  const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-const containerVariants = {
-  animate: {
-    transition: {
-      staggerChildren: 0.15,
-    },
-  },
-};
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError(null);
 
-export default function Home() {
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          loginType: activeTab,
+          identifier,
+          password,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || "Login failed");
+      }
+
+      router.push(data.redirectUrl);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : String(err));
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className="flex flex-1 flex-col items-center justify-center px-6 py-20 min-h-screen">
-      {/* Hero Section */}
       <motion.div
-        className="text-center mb-16"
-        initial={{ opacity: 0, y: -30 }}
+        className="text-center mb-10"
+        initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
+        transition={{ duration: 0.6 }}
       >
-        {/* Floating brand pill */}
-        <motion.div
-          className="inline-flex items-center gap-2 px-5 py-2 mb-8 glass text-sm"
-          style={{ borderRadius: "9999px" }}
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.2, duration: 0.6 }}
-        >
-          <span className="w-2 h-2 rounded-full bg-[var(--color-accent-sage)] animate-pulse" />
-          <span className="text-[var(--color-text-secondary)]">
-            System Online
-          </span>
-        </motion.div>
-
-        <h1 className="text-5xl sm:text-7xl tracking-tight mb-4 heading-serif">
+        <h1 className="text-4xl tracking-tight mb-2 heading-serif">
           crwn
           <span className="text-[var(--color-secondary)]">.</span>
           st
         </h1>
-
-        <motion.p
-          className="text-lg sm:text-xl text-[var(--color-text-secondary)] max-w-lg mx-auto leading-relaxed"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.4, duration: 0.6 }}
-        >
-          Quiet luxury meets seamless retail.
-          <br />
-          <span className="text-[var(--color-muted)]">
-            Choose your portal to begin.
-          </span>
-        </motion.p>
-      </motion.div>
-
-      {/* Portal Cards */}
-      <motion.div
-        className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl w-full"
-        variants={containerVariants}
-        initial="initial"
-        animate="animate"
-      >
-        {portals.map((portal, i) => (
-          <Link key={portal.href} href={portal.href} className="group">
-            <GlassCard
-              float
-              floatDelay={i}
-              className="p-8 h-full flex flex-col gap-6 cursor-pointer"
-            >
-              {/* Icon Container */}
-              <div className="w-14 h-14 rounded-2xl bg-[var(--color-primary)] flex items-center justify-center">
-                <portal.icon
-                  size={24}
-                  className="text-[var(--color-base)]"
-                  strokeWidth={1.5}
-                />
-              </div>
-
-              {/* Content */}
-              <div className="flex flex-col gap-2">
-                <h2 className="text-xl font-semibold text-[var(--color-primary)] group-hover:opacity-80 transition-opacity">
-                  {portal.title}
-                </h2>
-                <p className="text-xs font-medium text-[var(--color-secondary)] tracking-[0.15em] uppercase">
-                  {portal.subtitle}
-                </p>
-                <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed mt-1">
-                  {portal.description}
-                </p>
-              </div>
-
-              {/* Enter indicator */}
-              <div className="mt-auto pt-4 flex items-center gap-2 text-sm text-[var(--color-muted)] group-hover:text-[var(--color-primary)] transition-colors">
-                <span>Enter Portal</span>
-                <motion.span
-                  className="inline-block"
-                  animate={{ x: [0, 4, 0] }}
-                  transition={{
-                    duration: 1.5,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                  }}
-                >
-                  →
-                </motion.span>
-              </div>
-            </GlassCard>
-          </Link>
-        ))}
-      </motion.div>
-
-      {/* Bottom decorative element */}
-      <motion.div
-        className="mt-20 text-center"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.2, duration: 0.8 }}
-      >
-        <p className="text-xs text-[var(--color-muted)] tracking-[0.2em] uppercase">
-          crwn.st — Crown Street
+        <p className="text-sm text-[var(--color-text-secondary)]">
+          System Authentication
         </p>
+      </motion.div>
+
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.6, delay: 0.1 }}
+        className="w-full max-w-sm"
+      >
+        <GlassCard className="p-8">
+          {/* Tabs */}
+          <div className="flex gap-2 mb-8 bg-[var(--color-base)]/50 p-1 rounded-xl border border-[var(--glass-border)]">
+            <button
+              onClick={() => {
+                setActiveTab("customer");
+                setError(null);
+                setIdentifier("");
+                setPassword("");
+              }}
+              className={`flex-1 py-2 text-xs font-medium rounded-lg transition-colors ${
+                activeTab === "customer"
+                  ? "bg-[var(--glass-bg)] shadow-sm text-[var(--color-primary)] border border-[var(--glass-border)]"
+                  : "text-[var(--color-text-secondary)] hover:text-[var(--color-primary)]"
+              }`}
+            >
+              Customer
+            </button>
+            <button
+              onClick={() => {
+                setActiveTab("staff");
+                setError(null);
+                setIdentifier("");
+                setPassword("");
+              }}
+              className={`flex-1 py-2 text-xs font-medium rounded-lg transition-colors ${
+                activeTab === "staff"
+                  ? "bg-[var(--glass-bg)] shadow-sm text-[var(--color-primary)] border border-[var(--glass-border)]"
+                  : "text-[var(--color-text-secondary)] hover:text-[var(--color-primary)]"
+              }`}
+            >
+              Staff
+            </button>
+          </div>
+
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            {activeTab === "customer" ? (
+              <div>
+                <label className="text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider mb-1.5 block">
+                  Phone Number
+                </label>
+                <div className="relative">
+                  <Phone size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-muted)]" />
+                  <input
+                    type="tel"
+                    value={identifier}
+                    onChange={(e) => setIdentifier(e.target.value)}
+                    required
+                    placeholder="e.g. 0812345678"
+                    className="w-full pl-9 pr-3 py-2.5 text-sm rounded-xl border border-[var(--glass-border)] bg-[var(--color-base)] text-[var(--color-primary)] focus:outline-none focus:border-[var(--color-secondary)] transition-colors"
+                  />
+                </div>
+              </div>
+            ) : (
+              <>
+                <div>
+                  <label className="text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider mb-1.5 block">
+                    Username
+                  </label>
+                  <div className="relative">
+                    <User size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-muted)]" />
+                    <input
+                      type="text"
+                      value={identifier}
+                      onChange={(e) => setIdentifier(e.target.value)}
+                      required
+                      className="w-full pl-9 pr-3 py-2.5 text-sm rounded-xl border border-[var(--glass-border)] bg-[var(--color-base)] text-[var(--color-primary)] focus:outline-none focus:border-[var(--color-secondary)] transition-colors"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label className="text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider mb-1.5 block">
+                    Password
+                  </label>
+                  <div className="relative">
+                    <Lock size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-muted)]" />
+                    <input
+                      type="password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      required
+                      className="w-full pl-9 pr-3 py-2.5 text-sm rounded-xl border border-[var(--glass-border)] bg-[var(--color-base)] text-[var(--color-primary)] focus:outline-none focus:border-[var(--color-secondary)] transition-colors"
+                    />
+                  </div>
+                </div>
+              </>
+            )}
+
+            {error && (
+              <div className="p-3 mt-2 rounded-xl bg-red-500/10 border border-red-500/20 text-red-500 text-xs text-center font-medium">
+                {error}
+              </div>
+            )}
+
+            <button
+              type="submit"
+              disabled={isLoading || !identifier}
+              className="btn-crwn-primary w-full mt-4 !py-3"
+            >
+              {isLoading ? (
+                <Loader2 size={16} className="animate-spin" />
+              ) : (
+                <span className="flex items-center justify-center gap-2">
+                  <LogIn size={16} />
+                  Sign In
+                </span>
+              )}
+            </button>
+            
+            {activeTab === "staff" && (
+              <div className="mt-4 text-[10px] text-[var(--color-muted)] text-center space-y-1">
+                <p>Cashier: <code className="font-mono bg-[var(--color-base)] px-1 py-0.5 rounded">cashier</code> / <code className="font-mono bg-[var(--color-base)] px-1 py-0.5 rounded">68070254</code></p>
+                <p>Fitting: <code className="font-mono bg-[var(--color-base)] px-1 py-0.5 rounded">fitting</code> / <code className="font-mono bg-[var(--color-base)] px-1 py-0.5 rounded">68070056</code></p>
+              </div>
+            )}
+            
+            {activeTab === "customer" && (
+              <div className="mt-4 text-[10px] text-[var(--color-muted)] text-center space-y-1">
+                <p>Test Phone: <code className="font-mono bg-[var(--color-base)] px-1 py-0.5 rounded">0812345678</code></p>
+              </div>
+            )}
+          </form>
+        </GlassCard>
       </motion.div>
     </div>
   );
