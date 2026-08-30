@@ -5,21 +5,214 @@
     "name": "Ethereal Silk Dress",
     "category": "Dresses",
     "price": 129.99,
-    "tags": ["summer", "elegant", "silk"],
+    "tags": [
+      "summer",
+      "elegant",
+      "silk"
+    ],
     "variants": [
       {
         "sku": "p1-s-red",
         "size": "S",
         "color": "Red",
-        "stock": 5
+        "stock": 3
       },
       {
         "sku": "p1-m-red",
         "size": "M",
         "color": "Red",
         "stock": 2
+      },
+      {
+        "sku": "p1-l-red",
+        "size": "L",
+        "color": "Red",
+        "stock": 3
       }
     ],
     "image": "/images/ethereal-silk-dress.jpg"
+  },
+  {
+    "id": "p2",
+    "barcode": "8901234567891",
+    "name": "Cashmere Oversized Knit",
+    "category": "Knitwear",
+    "price": 249,
+    "tags": [
+      "winter",
+      "luxe",
+      "cashmere"
+    ],
+    "variants": [
+      {
+        "sku": "p2-s-cream",
+        "size": "S",
+        "color": "Cream",
+        "stock": 2
+      },
+      {
+        "sku": "p2-m-cream",
+        "size": "M",
+        "color": "Cream",
+        "stock": 6
+      },
+      {
+        "sku": "p2-l-cream",
+        "size": "L",
+        "color": "Cream",
+        "stock": 2
+      },
+      {
+        "sku": "p2-m-charcoal",
+        "size": "M",
+        "color": "Charcoal",
+        "stock": 3
+      }
+    ],
+    "image": "/images/cashmere-knit.jpg"
+  },
+  {
+    "id": "p3",
+    "barcode": "8901234567892",
+    "name": "Tailored Linen Blazer",
+    "category": "Outerwear",
+    "price": 189,
+    "tags": [
+      "spring",
+      "structured",
+      "linen"
+    ],
+    "variants": [
+      {
+        "sku": "p3-s-sand",
+        "size": "S",
+        "color": "Sand",
+        "stock": 3
+      },
+      {
+        "sku": "p3-m-sand",
+        "size": "M",
+        "color": "Sand",
+        "stock": 5
+      },
+      {
+        "sku": "p3-l-sand",
+        "size": "L",
+        "color": "Sand",
+        "stock": 4
+      },
+      {
+        "sku": "p3-m-navy",
+        "size": "M",
+        "color": "Navy",
+        "stock": 2
+      }
+    ],
+    "image": "/images/linen-blazer.jpg"
+  },
+  {
+    "id": "p4",
+    "barcode": "8901234567893",
+    "name": "Organic Cotton Tee",
+    "category": "Tops",
+    "price": 59,
+    "tags": [
+      "basics",
+      "organic",
+      "cotton"
+    ],
+    "variants": [
+      {
+        "sku": "p4-s-white",
+        "size": "S",
+        "color": "White",
+        "stock": 12
+      },
+      {
+        "sku": "p4-m-white",
+        "size": "M",
+        "color": "White",
+        "stock": 15
+      },
+      {
+        "sku": "p4-l-white",
+        "size": "L",
+        "color": "White",
+        "stock": 8
+      },
+      {
+        "sku": "p4-m-black",
+        "size": "M",
+        "color": "Black",
+        "stock": 10
+      },
+      {
+        "sku": "p4-l-black",
+        "size": "L",
+        "color": "Black",
+        "stock": 7
+      }
+    ],
+    "image": "/images/cotton-tee.jpg"
+  },
+  {
+    "id": "p5",
+    "barcode": "8901234567894",
+    "name": "Wide-Leg Wool Trousers",
+    "category": "Bottoms",
+    "price": 175,
+    "tags": [
+      "tailored",
+      "wool",
+      "wide-leg"
+    ],
+    "variants": [
+      {
+        "sku": "p5-s-taupe",
+        "size": "S",
+        "color": "Taupe",
+        "stock": 4
+      },
+      {
+        "sku": "p5-m-taupe",
+        "size": "M",
+        "color": "Taupe",
+        "stock": 6
+      },
+      {
+        "sku": "p5-l-taupe",
+        "size": "L",
+        "color": "Taupe",
+        "stock": 3
+      }
+    ],
+    "image": "/images/wool-trousers.jpg"
+  },
+  {
+    "id": "p6",
+    "barcode": "8901234567895",
+    "name": "Suede Crossbody Bag",
+    "category": "Accessories",
+    "price": 145,
+    "tags": [
+      "suede",
+      "accessory",
+      "minimal"
+    ],
+    "variants": [
+      {
+        "sku": "p6-os-tan",
+        "size": "OS",
+        "color": "Tan",
+        "stock": 7
+      },
+      {
+        "sku": "p6-os-olive",
+        "size": "OS",
+        "color": "Olive",
+        "stock": 4
+      }
+    ],
+    "image": "/images/suede-bag.jpg"
   }
 ]

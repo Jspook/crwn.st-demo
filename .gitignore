@@ -39,3 +39,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local mock databases (credentials, transactions, and session states)
+/data/cart.json
+/data/fittingOrders.json
+/data/receipts.json
+/data/users.json
+

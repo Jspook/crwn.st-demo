@@ -1,39 +1,57 @@
-import { NextResponse } from 'next/server';
-import { readData, writeData } from '@/lib/db';
+import { NextResponse } from "next/server";
+import { readData, writeData } from "@/lib/db";
+import { getSession } from "@/lib/session";
 
-const FILE_NAME = 'cart.json';
+export async function GET() {
+  const session = await getSession();
+  if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-export async function GET(request: Request) {
   try {
-    const { searchParams } = new URL(request.url);
-    const userId = searchParams.get('userId');
-    const carts = await readData<any>(FILE_NAME);
-    
-    if (userId) {
-      const userCart = carts.find((c: any) => c.userId === userId) || { userId, items: [] };
-      return NextResponse.json(userCart);
-    }
-    return NextResponse.json(carts);
+    const carts = await readData("cart.json") as any[];
+    const userCart = carts.find((c: any) => c.userId === session.id);
+    return NextResponse.json(userCart || { userId: session.id, items: [] });
   } catch (error) {
-    return NextResponse.json({ error: 'Failed to fetch carts' }, { status: 500 });
+    return NextResponse.json({ error: "Failed to fetch cart" }, { status: 500 });
   }
 }
 
-export async function PUT(request: Request) {
+export async function POST(request: Request) {
+  const session = await getSession();
+  if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
   try {
-    const updatedCart = await request.json();
-    const carts = await readData<any>(FILE_NAME);
-    
-    const index = carts.findIndex((c: any) => c.userId === updatedCart.userId);
-    if (index !== -1) {
-      carts[index] = { ...carts[index], ...updatedCart };
+    const { items } = await request.json();
+    const carts = await readData("cart.json") as any[];
+    const cartIndex = carts.findIndex((c: any) => c.userId === session.id);
+
+    if (cartIndex > -1) {
+      carts[cartIndex].items = items;
+      carts[cartIndex].updatedAt = new Date().toISOString();
     } else {
-      carts.push(updatedCart);
+      carts.push({
+        userId: session.id,
+        items,
+        updatedAt: new Date().toISOString()
+      });
     }
-    
-    await writeData(FILE_NAME, carts);
-    return NextResponse.json(updatedCart);
+
+    await writeData("cart.json", carts);
+    return NextResponse.json({ success: true });
   } catch (error) {
-    return NextResponse.json({ error: 'Failed to update cart' }, { status: 500 });
+    return NextResponse.json({ error: "Failed to update cart" }, { status: 500 });
+  }
+}
+
+export async function DELETE() {
+  const session = await getSession();
+  if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+  try {
+    const carts = await readData("cart.json") as any[];
+    const filteredCarts = carts.filter((c: any) => c.userId !== session.id);
+    await writeData("cart.json", filteredCarts);
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    return NextResponse.json({ error: "Failed to clear cart" }, { status: 500 });
   }
 }

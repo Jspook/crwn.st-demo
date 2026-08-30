@@ -1,69 +1,156 @@
-import Image from "next/image";
+"use client";
+
+import { motion } from "framer-motion";
+import Link from "next/link";
+import GlassCard from "@/components/ui/GlassCard";
+import { ShoppingBag, ScanLine, LayoutDashboard } from "lucide-react";
+
+const portals = [
+  {
+    title: "Customer",
+    subtitle: "Scan · Try · Pay",
+    description:
+      "Browse the catalog, scan barcodes, request fitting room items, and checkout — all from your device.",
+    href: "/customer",
+    icon: ShoppingBag,
+  },
+  {
+    title: "Cashier POS",
+    subtitle: "Process · Invoice · Close",
+    description:
+      "Full point-of-sale interface with barcode scanning, payment processing, and e-receipt generation.",
+    href: "/pos",
+    icon: ScanLine,
+  },
+  {
+    title: "Fitting Room",
+    subtitle: "Manage · Fulfill · Track",
+    description:
+      "Real-time Kanban board for fitting room orders. Track requests, fulfill items, and manage room occupancy.",
+    href: "/staff",
+    icon: LayoutDashboard,
+  },
+];
+
+const containerVariants = {
+  animate: {
+    transition: {
+      staggerChildren: 0.15,
+    },
+  },
+};
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+    <div className="flex flex-1 flex-col items-center justify-center px-6 py-20 min-h-screen">
+      {/* Hero Section */}
+      <motion.div
+        className="text-center mb-16"
+        initial={{ opacity: 0, y: -30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
+      >
+        {/* Floating brand pill */}
+        <motion.div
+          className="inline-flex items-center gap-2 px-5 py-2 mb-8 glass text-sm"
+          style={{ borderRadius: "9999px" }}
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.2, duration: 0.6 }}
+        >
+          <span className="w-2 h-2 rounded-full bg-[var(--color-accent-sage)] animate-pulse" />
+          <span className="text-[var(--color-text-secondary)]">
+            System Online
+          </span>
+        </motion.div>
+
+        <h1 className="text-5xl sm:text-7xl tracking-tight mb-4 heading-serif">
+          crwn
+          <span className="text-[var(--color-secondary)]">.</span>
+          st
+        </h1>
+
+        <motion.p
+          className="text-lg sm:text-xl text-[var(--color-text-secondary)] max-w-lg mx-auto leading-relaxed"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4, duration: 0.6 }}
+        >
+          Quiet luxury meets seamless retail.
+          <br />
+          <span className="text-[var(--color-muted)]">
+            Choose your portal to begin.
+          </span>
+        </motion.p>
+      </motion.div>
+
+      {/* Portal Cards */}
+      <motion.div
+        className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl w-full"
+        variants={containerVariants}
+        initial="initial"
+        animate="animate"
+      >
+        {portals.map((portal, i) => (
+          <Link key={portal.href} href={portal.href} className="group">
+            <GlassCard
+              float
+              floatDelay={i}
+              className="p-8 h-full flex flex-col gap-6 cursor-pointer"
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+              {/* Icon Container */}
+              <div className="w-14 h-14 rounded-2xl bg-[var(--color-primary)] flex items-center justify-center">
+                <portal.icon
+                  size={24}
+                  className="text-[var(--color-base)]"
+                  strokeWidth={1.5}
+                />
+              </div>
+
+              {/* Content */}
+              <div className="flex flex-col gap-2">
+                <h2 className="text-xl font-semibold text-[var(--color-primary)] group-hover:opacity-80 transition-opacity">
+                  {portal.title}
+                </h2>
+                <p className="text-xs font-medium text-[var(--color-secondary)] tracking-[0.15em] uppercase">
+                  {portal.subtitle}
+                </p>
+                <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed mt-1">
+                  {portal.description}
+                </p>
+              </div>
+
+              {/* Enter indicator */}
+              <div className="mt-auto pt-4 flex items-center gap-2 text-sm text-[var(--color-muted)] group-hover:text-[var(--color-primary)] transition-colors">
+                <span>Enter Portal</span>
+                <motion.span
+                  className="inline-block"
+                  animate={{ x: [0, 4, 0] }}
+                  transition={{
+                    duration: 1.5,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
+                >
+                  →
+                </motion.span>
+              </div>
+            </GlassCard>
+          </Link>
+        ))}
+      </motion.div>
+
+      {/* Bottom decorative element */}
+      <motion.div
+        className="mt-20 text-center"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.2, duration: 0.8 }}
+      >
+        <p className="text-xs text-[var(--color-muted)] tracking-[0.2em] uppercase">
+          crwn.st — Crown Street
+        </p>
+      </motion.div>
     </div>
   );
 }
