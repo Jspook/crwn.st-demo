@@ -6,8 +6,19 @@ export async function readData<T>(fileName: string): Promise<T[]> {
   try {
     const data = await fs.readFile(filePath, 'utf-8');
     return JSON.parse(data) as T[];
-  } catch (error: any) {
-    if (error.code === 'ENOENT') {
+  } catch (error: unknown) {
+    const err = error as { code?: string };
+    if (err.code === 'ENOENT') {
+      if (fileName === 'users.json') {
+        const examplePath = path.join(process.cwd(), 'data', 'users.example.json');
+        try {
+          const exampleData = await fs.readFile(examplePath, 'utf-8');
+          await fs.writeFile(filePath, exampleData, 'utf-8');
+          return JSON.parse(exampleData) as T[];
+        } catch {
+          return [];
+        }
+      }
       return [];
     }
     throw error;

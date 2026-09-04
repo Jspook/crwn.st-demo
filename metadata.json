@@ -1,0 +1,8 @@
+{
+  "name": "crwn.st — Crown Street",
+  "description": "Quiet luxury meets seamless retail. Customer self-service, cashier POS, and fitting room orchestration — elevated.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { LogOut, RefreshCw, CheckCircle2, Clock, Shirt } from "lucide-react";
 
@@ -20,8 +20,10 @@ export default function FittingRoomStaff() {
   const [orders, setOrders] = useState<FittingOrder[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  const fetchOrders = async () => {
-    setIsLoading(true);
+  const fetchOrders = useCallback(async (showLoadingIndicator = false) => {
+    if (showLoadingIndicator) {
+      setIsLoading(true);
+    }
     try {
       const res = await fetch("/api/fitting-orders");
       const data = await res.json();
@@ -31,14 +33,16 @@ export default function FittingRoomStaff() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
-    fetchOrders();
+    fetchOrders(false);
     // Simple polling for real-time feel
-    const interval = setInterval(fetchOrders, 5000);
+    const interval = setInterval(() => {
+      fetchOrders(false);
+    }, 5000);
     return () => clearInterval(interval);
-  }, []);
+  }, [fetchOrders]);
 
   const handleLogout = async () => {
     await fetch("/api/auth/logout", { method: "POST" });
@@ -73,7 +77,7 @@ export default function FittingRoomStaff() {
         </div>
         <div className="flex items-center gap-3">
           <button
-            onClick={fetchOrders}
+            onClick={() => fetchOrders(true)}
             className="p-2 text-[var(--color-muted)] hover:text-[var(--color-primary)] transition-colors"
           >
             <RefreshCw size={16} className={isLoading ? "animate-spin" : ""} />
